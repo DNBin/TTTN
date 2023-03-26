@@ -1,0 +1,23 @@
+﻿
+
+@model QuanlyDiemrenluyen.Models.Quyen
+
+<form name="userForm" action="Quyen/AddOrEdit" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-body ">
+        <h4 class="modal-title"><i class="fa fa-exclamation-triangle text-danger mr-1"></i> Xóa quyền </h4><br />
+        @Html.HiddenFor(model => model.MaQuyen)
+        <div class="row">
+            <div class="col-md-12">
+                <p> Dữ liệu xóa sẽ không được phục hồi! </p>
+                <div class="form-group">
+                    <div class="modal-footer">
+                        <button type="button" onclick="Delete()" class="btn btn-danger ">Xóa</button>&nbsp;
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

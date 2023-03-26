@@ -1,0 +1,97 @@
+﻿@model List<QuanlyDiemrenluyen.Models.KyDangKy>
+    @using QuanlyDiemrenluyen.Helpers;
+@{
+    ViewBag.Title = "Duyệt điểm rèn luyện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = 0;
+}
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Quản lý đánh giá</a></li>
+                            <li class="breadcrumb-item"><a href="#">@ViewBag.Title</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="datatable" class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Năm học</th>
+                                        <th>Học kỳ</th>
+                                        <th>Tình trạng</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        id++;
+                                    <tr>
+                                        <td>@id</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NamXet)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.HocKyXet)</td>
+                                        <td>
+                                            @if (item.TrangThai == (int)EnumKyDangKy.DaMo)
+                                            {
+                                                <label class="btn-hoantat">
+                                                    <i class="fa-regular fa-face-smile"></i>
+                                                    Đang mở
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    Đã kết thúc
+                                                </label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.TrangThai == (int)EnumKyDangKy.DaMo)
+                                            {
+                                                <a href="/DuyetCanBoLop/ListSV?KyDKID=@item.KyDkid" class=" btn-sm btn-icon btn-info" style="background: #0179A8; border: none" data-bs-toggle="tooltip" data-bs-placement="top" title="Chi tiết phiếu rèn luyện"><i class="fa-solid fa-eye" style="color: white"></i></a>
+                                                @*@Html.ActionLink(" ", "ListSV", new { KyDkid = item.KyDkid }, new { @class = "fa-solid fa-eye" })*@
+                                            }
+                                            else
+                                            {
+                                                <a href="/DuyetCanBoLop/LoadListSV?KyDKID=@item.KyDkid" class=" btn-sm btn-icon btn-info" style="background: #0179A8; border: none" data-bs-toggle="tooltip" data-bs-placement="top" title="Chi tiết phiếu rèn luyện"><i class="fa-solid fa-eye" style="color: white"></i></a>
+                                                @*@Html.ActionLink(" ", "LoadListSV", new { KyDkid = item.KyDkid }, new { @class = "fa-solid fa-eye" })*@
+                                            }
+                                            <a href="/DuyetCanBoLop/XuatThongKeLop?KyDKID=@item.KyDkid" class=" btn-sm btn-icon btn-info" style="background: #009900; border: none" data-bs-toggle="tooltip" data-bs-placement="top" title="Xuất thông kê"><i class="fa-regular fa-file-excel" style="color: white"></i></a>
+                                            @*@Html.ActionLink(" ", "XuatThongKeLop", new { KyDKID = item.KyDkid }, new { @class = "fa-solid fa-file-export", placement = "top", title = "Xuất thống kê" })*@
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+

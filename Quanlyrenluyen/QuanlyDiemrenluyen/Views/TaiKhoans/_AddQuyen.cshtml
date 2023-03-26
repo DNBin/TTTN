@@ -1,0 +1,59 @@
+﻿@model QuanlyDiemrenluyen.ViewModels.TaiKhoanVM
+
+@{
+    var dsquyen = (List<QuanlyDiemrenluyen.Models.Quyen>)ViewBag.Quyen;
+}
+<form name="userForm" action="TaiKhoans/AddOrEdit" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <h4 id="TT" class="modal-title">Cập nhật</h4><br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TaiKhoanID)
+        <div class="row">
+            <div class="mb-3">
+                <label class="form-label">Tên tài khoản</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.TenTaiKhoan, new { htmlAttributes = new { @class = "form-control", required = "required", disabled = "true" } })
+                    @Html.ValidationMessageFor(model => model.TenTaiKhoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Họ và tên</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control", required = "required", disabled = "true" } })
+                    @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Chức vụ</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("ChucVuID", (IEnumerable<SelectListItem>)ViewBag.cv, "--- Lựa chọn---", new { @class = "form-control", disabled="true", required = "required" })
+                    @Html.ValidationMessageFor(model => model.ChucVuId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Vai trò</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("MaQuyenList", (IEnumerable<SelectListItem>)ViewBag.quyens, new { @class = "js-example-basic-multiple", style = "width:100%", multiple = "multiple", required = "required" })
+                </div>
+            </div>
+            <div class="mb-0">
+                <div class="modal-footer">
+                    <button type="button" onclick="AddQuyen()" class="btn btn-primary waves-effect waves-light me-1">Lưu</button>&nbsp;
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $(".js-example-basic-multiple").select2({
+            dropdownParent: $("#userModal"),
+            width: 'resolve'
+        });
+    });
+</script>
+

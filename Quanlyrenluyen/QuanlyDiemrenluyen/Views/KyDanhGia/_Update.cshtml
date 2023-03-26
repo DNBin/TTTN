@@ -1,0 +1,23 @@
+﻿@model QuanlyDiemrenluyen.Models.KyDangKy
+
+<form name="userForm" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <h4 class="modal-title"><i class="fa fa-exclamation-triangle text-danger mr-1"></i> Kết thúc kỳ đánh giá </h4><br />
+        @Html.HiddenFor(model => model.KyDkid)
+        <div class="row">
+            <div class="col-md-12">
+                <p> Khi kết thúc sẽ không mở kỳ đăng ký lại được! </p>
+                <div class="form-group">
+                    <div class="modal-footer">
+                        <button type="button" onclick="Update()" class="btn btn-danger ">Lưu</button>&nbsp;
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+

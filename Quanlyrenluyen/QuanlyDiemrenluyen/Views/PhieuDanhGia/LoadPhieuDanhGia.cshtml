@@ -1,0 +1,148 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.PhieuDanhGiaVM>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "LoadPhieuDiem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var colspan = "";
+    var tongdiemSV = 0;
+    var tongdiemCBL = 0;
+    var tongdiemCBK = 0;
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable-buttons" class="table table-editable table-nowrap align-middle font-size-13 " >
+                                <thead>
+                                    <h4 style="margin: 0px auto; width: 400px;">PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN</h4>
+                                    <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px; padding-top: 15px; font-weight: 500;">
+                                        <p>Họ và tên: <span>@user.HoTen</span></p>
+                                        <p>Ngày tháng năm sinh: <span>@Convert.ToDateTime((user.NgaySinh).ToString()).ToString("dd/MM/yyyy")</span></p>
+                                        <p>MSSV: <span>@user.MaSV</span></p>
+                                    </div>
+                                    <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px;font-weight: 500;">
+                                        <p>Lớp: <span>@user.TenLop</span> </p>
+                                        <p>Khoa: <span>@user.TenKhoa</span> </p>
+                                        <p>Học kì: <span>@ViewBag.hocky</span></p>
+                                        <p>Năm học: <span>@ViewBag.namxet</span> </p>
+                                    </div>
+                                    <tr>
+                                        <th>TT</th>
+                                        <th>Nội dung đánh giá</th>
+                                        <th>Điểm tối đa</th>
+                                        <th>Sinh viên tự đánh giá</th>
+                                        <th>Tập thể lớp đánh giá</th>
+                                        <th>Khoa đánh giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @Html.HiddenFor(modelItem => item.TieuChiId)
+                                            <th @if (item.DiemTieuChi != null) { colspan = "colspan= 2"; @colspan  } else { colspan = "colspan= 6"; @colspan }>
+                                                @item.TenTieuChi
+                                                @if (item.TieuChiId == 35)
+                                                {
+                                                    <table class="table table-striped table-bordered  ">
+                                                        <tr>
+                                                            <th rowspan="2">Chức vụ</th>
+                                                            <th colspan="4">Xếp loại</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Xuất sắc</td>
+                                                            <td>Tốt</td>
+                                                            <td>Khá</td>
+                                                            <td>Trung bình khá</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cấp trưởng</th>
+                                                            <td>10</td>
+                                                            <td>9</td>
+                                                            <td>8</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Cấp phó</th>
+                                                            <td>8</td>
+                                                            <td>7</td>
+                                                            <td>6</td>
+                                                            <td>4</td>
+                                                        </tr>
+                                                    </table>
+                                                }
+                                            </th>
+
+
+
+
+                                            @if (item.DiemTieuChi != null)
+                                            {
+                                                <th>@item.DiemTieuChi</th>
+                                                if (item.DiemSv != null)
+                                                {
+                                                    <th>@item.DiemSv</th>
+                                                    tongdiemSV += (int)item.DiemSv;
+                                                }
+                                                else
+                                                {
+                                                    <th>0</th>
+                                                    tongdiemSV += 0;
+                                                }
+                                                if (item.DiemCbl != null)
+                                                {
+                                                    <th>@item.DiemCbl</th>
+                                                    tongdiemCBL += (int)item.DiemCbl;
+                                                }
+                                                else
+                                                {
+                                                    <th>0</th>
+                                                    tongdiemCBL += 0;
+                                                }
+                                                if (item.DiemCbk != null)
+                                                {
+                                                    <th>@item.DiemCbk</th>
+                                                    tongdiemCBK += (int)item.DiemCbk;
+
+                                                }
+                                                else
+                                                {
+                                                    <th>0</th>
+                                                    tongdiemCBK += 0;
+
+                                                }
+
+
+                                            }
+
+
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <th colspan="2">Tổng điểm</th>
+                                        <td colspan="1"> 100</td>
+                                        <td colspan="1"> @tongdiemSV</td>
+                                        <td colspan="1"> @tongdiemCBL</td>
+                                        <th><span id="tong">@tongdiemCBK</span></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>

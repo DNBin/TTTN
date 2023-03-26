@@ -1,0 +1,200 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.PhieuDanhGiaVM>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "DuyetPhieuDiem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var colspan = "";
+    var tongdiemSV = 0;
+    var tongdiemCBL = 0;
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-editable table-nowrap align-middle font-size-13 ">
+                                <thead>
+                                    <h4 style="margin: 0px auto; width: 400px;">PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN</h4>
+                                    <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px; padding-top: 15px; font-weight: 500;">
+                                        <p>Họ và tên: <span>@ViewBag.tensv</span></p>
+                                        <p>Ngày tháng năm sinh: <span>@Convert.ToDateTime((ViewBag.ngaysinh).ToString()).ToString("dd/MM/yyyy")</span></p>
+                                        <p>MSSV: <span>@ViewBag.mssv</span></p>
+                                    </div>
+                                    <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px;font-weight: 500;">
+                                        <p>Lớp: <span>@ViewBag.tenlop</span> </p>
+                                        <p>Khoa: <span>@user.TenKhoa</span> </p>
+                                        <p>Học kì: <span>@ViewBag.hocky</span></p>
+                                        <p>Năm học: <span>@ViewBag.namxet</span> </p>
+                                    </div>
+                                    <tr>
+                                        <th>TT</th>
+                                        <th>Nội dung đánh giá</th>
+                                        <th>Điểm tối đa</th>
+                                        <th>Sinh viên tự đánh giá</th>
+                                        <th>Tập thể lớp đánh giá</th>
+                                        <th>Khoa lớp đánh giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        @Html.HiddenFor(modelItem => item.TieuChiId)
+                                        <th @if (item.DiemTieuChi != null) { colspan = "colspan= 2"; @colspan  } else { colspan = "colspan= 6"; @colspan }>
+                                            @item.TenTieuChi
+                                            @if (item.TieuChiId == 35)
+                                            {
+                                                <table class="table table-striped table-bordered  ">
+                                                    <tr>
+                                                        <th rowspan="2">Chức vụ</th>
+                                                        <th colspan="4">Xếp loại</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Xuất sắc</td>
+                                                        <td>Tốt</td>
+                                                        <td>Khá</td>
+                                                        <td>Trung bình khá</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Cấp trưởng</th>
+                                                        <td>10</td>
+                                                        <td>9</td>
+                                                        <td>8</td>
+                                                        <td>6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Cấp phó</th>
+                                                        <td>8</td>
+                                                        <td>7</td>
+                                                        <td>6</td>
+                                                        <td>4</td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                        </th>
+
+
+
+
+                                        @if (item.DiemTieuChi != null)
+                                        {
+                                            <th>@item.DiemTieuChi</th>
+                                            if (item.DiemSv != null)
+                                            {
+                                                <th>@item.DiemSv</th>
+                                            }
+                                            else
+                                            {
+                                                <th>0</th>
+                                            }
+                                            if (item.DiemCbl != null)
+                                            {
+                                                <th>@item.DiemCbl</th>
+                                            }
+                                            else
+                                            {
+                                                <th>0</th>
+                                            }
+
+                                            <th><input id="NhapDiemCBK" step="@item.DiemTieuChi" type="number" name="NhapDiemCBK" min="0" max="@item.DiemTieuChi" onKeyUp=" if (this.value > @item.DiemTieuChi) { this.value='@item.DiemTieuChi' }" onkeypress="return isNumberKey(event)" onchange="tong()" data-diemtieuchi="@item.DiemTieuChi" data-phieuid="@item.PhieuId" data-diemid="@item.DiemId" data-tieuchiid="@item.TieuChiId" class="form-control NhapDiemCBK" placeholder="0"></th>
+                                        }
+
+
+                                    </tr>
+
+
+                                        if (item.DiemSv != null)
+                                        {
+                                            tongdiemSV += (int)item.DiemSv;
+                                        }
+                                        else
+                                        {
+                                            tongdiemSV += 0;
+                                        }
+                                        if (item.DiemCbl != null)
+                                        {
+                                            tongdiemCBL += (int)item.DiemCbl;
+                                        }
+                                        else
+                                        {
+                                            tongdiemCBL += 0;
+                                        }
+                                    }
+
+                                <tr>
+                                    <th colspan="2">Tổng điểm</th>
+                                    <td colspan="1"> 100</td>
+                                    <td colspan="1"> @tongdiemSV</td>
+                                    <td colspan="1"> @tongdiemCBL</td>
+                                    <th><span id="tong"></span></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" onclick="Send()" class="btn btn-primary waves-effect waves-light float-end pf-2"><i class="fa-solid fa-share"></i> Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+    }
+        function tong() {
+            let sum = 0;
+            $('.NhapDiemCBK').each(function (i, value) {
+                diem = $(value).val()
+                sum += Number(diem)
+            });
+            console.log(sum);
+            var hocky = document.getElementById("tong");
+            hocky.innerHTML = sum;
+        }
+    function Send() {
+        var NhapDiemCBK = [];
+        $('.NhapDiemCBK').each(function (i, value) {
+
+            Nhapdiem = {
+                PhieuID: $(value).data("phieuid"),
+                TieuChiID : $(value).data("tieuchiid"),
+                DiemID: $(value).data("diemid"),
+                DiemCBK:$(value).val()
+            }
+            NhapDiemCBK.push(Nhapdiem);
+
+        });
+        /*console.log(NhapDiemCBL);*/
+        $.ajax({
+            url: "/DuyetCanBoKhoa/AddDiemByCBK",
+            data: JSON.stringify(NhapDiemCBK),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (res) {
+                if (res.Status) {
+                    toastr.success(res.Message);
+                    setTimeout(function () {
+                        window.location = "/DuyetCanBoKhoa/ListSVThuocLop?KyDkid=@ViewBag.kydkid&MaLop=@ViewBag.malop"
+                    }, 1000);
+                }
+            },
+            error: function () {
+                toastr.error("Đã xảy ra lỗi.");
+            }
+        });
+    }
+</script>
+
+

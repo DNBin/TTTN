@@ -1,0 +1,105 @@
+﻿@model QuanlyDiemrenluyen.Models.TaiKhoan
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Đăng nhập</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+    <meta content="Themesbrand" name="author">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Assets/images/favicon.ico">
+
+    <!-- Bootstrap Css -->
+    <link href="~/Assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css">
+    <!-- Icons Css -->
+    <link href="~/Assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <!-- App Css-->
+    <link href="~/Assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body class="account-pages">
+    <!-- Begin page -->
+    <div class="accountbg" style="background-image: url('./Assets/images/bg.jpg'); background-size: cover; "></div>
+    
+    <div class=" wrapper-page account-page-full ">
+
+        <div class="card shadow-none ">
+            <div class="card-block ">
+
+                <div class="account-box ">
+
+                    <div class="card-box shadow-none p-4 ">
+                        <div class="p-2 ">
+                            <div class="text-center mt-4 ">
+                                <a href="index.html "><img src="~/Assets/images/logo-light.png " height="100 " alt="logo "></a>
+                            </div>
+
+                            <h4 class="font-size-22 mt-5 text-center text-primary">DTHU - MIT</h4>
+                            <p class="text-muted text-center mb-1">Chào mừng bạn đã đến với hệ thống</p>
+                            <p class="text-muted text-center ">Xét điểm rèn luyện DTHU!</p>
+                            @using (@Html.BeginForm("SignIn", "DangNhap", FormMethod.Post, new { @class = "auth-form" }))
+                            {
+                                <div class="mb-3 ">
+                                    <label class="form-label " for="username ">Tài khoản</label>
+                                    <input type="text" class="form-control " name="TenTaiKhoan" id="TenTaiKhoan " placeholder="Tài khoản ">
+                                </div>
+
+
+                                <div class="mb-3 ">
+                                    <label class="form-label " for="userpassword ">Mật khẩu</label>
+                                    <input type="password" class="form-control" name="MatKhau" id="MatKhau " placeholder="Mật khẩu ">
+                                </div>
+                                <div class="mb-3 mt-2 mb-0 row ">
+                                    <div class="col-12 mt-3 ">
+                                        <a href="pages-recoverpw-2.html "><i class="mdi mdi-lock "></i> Quên mật khẩu ?</a>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row ">
+                                    <div class="col-sm-12 text-end ">
+                                        <button class="btn btn-primary waves-effect waves-light" type="submit">Đăng nhập</button>
+                                    </div>
+                                </div>
+
+                            }
+                            <!--<div class="mt-5 pt-4 text-center ">
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> Coppy Right Nghĩa - Bin-->
+                                <!-- <i class="mdi mdi-heart text-danger "></i> -->
+                            <!--</div>-->
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/Assets/libs/jquery/jquery.min.js "></script>
+    <script src="~/Assets/libs/bootstrap/js/bootstrap.bundle.min.js "></script>
+    <script src="~/Assets/libs/metismenu/metisMenu.min.js "></script>
+    <script src="~/Assets/libs/simplebar/simplebar.min.js "></script>
+    <script src="~/Assets/libs/node-waves/waves.min.js "></script>
+
+
+    <script src="~/Assets/js/app.js "></script>
+
+</body>
+
+</html>
+

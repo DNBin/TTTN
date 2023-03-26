@@ -1,0 +1,124 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.DanhSachSinhVienVM>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    ViewBag.Title = "Danh sách sinh viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = 0;
+}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Quản lý đánh giá</a></li>
+                            <li class="breadcrumb-item"><a href="/DuyetCanBoLop">Duyệt điểm rèn luyện</a></li>
+                            <li class="breadcrumb-item"><a href="#">@ViewBag.title</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @*<button type="button" class="btn btn-light">Duyệt</button>
+                            <h4 class="card-title">Sinh viên</h4>*@
+                            <table id="datatable" class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ tên</th>
+                                        <th>Mã sinh viên</th>
+                                        <th>Tình trạng</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        id++;
+                                        <tr>
+                                            <td>@id</td>
+                                            <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.MaTaiKhoan)</td>
+
+                                            <td>
+                                                @if (item.TrangThai == (int)EnumThongBao.KhoiTao)
+                                                {
+                                                <label class="btn-hoantat text-danger">
+                                                    <i class="fa-regular fa-face-smile"> </i>
+                                                    Chưa tạo phiếu
+                                                </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.DangXuLy)
+                                                {
+                                                    <label>
+                                                        <i class="fa-solid fa-check"> </i>
+                                                        Đang xét điểm
+                                                    </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.CanBoLopXet)
+                                                {
+                                                    <label>
+                                                        <i class="fa-regular fa-face-smile"></i>
+                                                        Chờ duyệt
+                                                    </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.CanboKhoaXet)
+                                                {
+                                                    
+                                                    <label class="text-success">
+                                                        <i class="fa-regular fa-face-smile"></i>
+                                                        Chờ khoa duyệt
+                                                    </label>
+                                                    
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.HoanThanh)
+                                                {
+                                                    <label class="text-success">
+                                                        <i class="fa-solid fa-check"> </i>
+                                                        Hoàn thành
+                                                    </label>
+                                                }
+                                                
+                                            </td>
+                                            <td>
+                                                @if (item.TrangThai == (int)EnumThongBao.CanBoLopXet)
+                                                {
+                                                    @Html.ActionLink(" ", "DuyetPhieu", new { KyDKID = ViewBag.kydkid, TaiKhoanID = item.TaiKhoanId }, new { @class = "fa-solid fa-eye" })
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.CanboKhoaXet || item.TrangThai == (int)EnumThongBao.HoanThanh)
+                                                {
+                                                    @Html.ActionLink(" ", "LoadPhieu", new { KyDKID = ViewBag.kydkid, TaiKhoanID = item.TaiKhoanId }, new { @class = "fa-solid fa-eye" })
+                                                }
+                                                else { }
+
+                                                
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+
+

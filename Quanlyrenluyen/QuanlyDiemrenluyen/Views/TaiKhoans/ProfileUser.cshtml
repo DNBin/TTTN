@@ -1,0 +1,190 @@
+﻿@model QuanlyDiemrenluyen.Models.TaiKhoan
+@using QuanlyDiemrenluyen.Helpers;
+
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <!-- end page title -->
+            <div class="col-xl-12 col-md-12 mt-2">
+                <div class="card directory-card">
+                    <div class="card-body bg-body" style="border: 1px solid rgba(36, 36, 37, 0.12);">
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input type="file" id="ImageUpload" name="ImageUpload" @*onclick="ShowImage(this, document.getElementById('previewImage'))"*@ accept="image/*" />
+                                @*<input type="button" id="btnUpload" name="btnUpload" value="" class="btn btn-danger" />*@
+                                <label class="imgg" type="button" id="btnUpload" for="ImageUpload"> <i class="fa fa-pencil-alt"></i></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview">
+                                    <img id="previewImage" src="@user.HinhAnh" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3 mt-3 text-center">
+                            <input type="file" name="" id="">
+                            <h5 class="text-dark font-size-24 mb-1 text-center" style="font-weight: 800;">
+                                @user.HoTen
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="usermodalBody">
+                   
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <div class="row">
+        <div class="col-xl-6 col-md-12">
+            <div class="card directory-card ">
+                <div class="card-body" style="border: 1px solid rgba(20, 20, 31, 0.12);">
+                    <p style="color: rgb(53, 51, 51); font-weight: 600;"><button class="btn text-muted" onclick="showPopup(@user.Id)" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="Sửa thông tin cá nhân"><i class="fa-solid fa-user-pen"></i> </button>Thông tin cá nhân </p>
+                    <div class="flex-grow-1 ms-3 mt-3">
+                        <hr style="height: 2px; color: black;">
+                        <p>
+                            Khoa :
+                            <span class="text-dark font-size-15 m "> @user.TenKhoa </span>
+                        </p>
+                        <p>
+                            Lớp :
+                            <span class="text-dark font-size-15 m "> @user.TenLop </span>
+                        </p>
+                        <p>
+                            MSSV :
+                            <span class="text-dark font-size-15 m "> @user.MaSV </span>
+                        </p>
+                        <p>
+                            Email :
+                            <span class="text-dark font-size-15 m-0 "> @user.Email</span>
+                        </p>
+                        <p>
+                            Số điện thoại :
+                            <span class="text-dark font-size-15 m-0 "> @user.SDT </span>
+                        </p>
+                        <p>
+                            Địa chỉ :
+                            <span class="text-dark font-size-15 m-0 "> @user.Diachi </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-12">
+            <div class="card directory-card">
+                <div class="card-body" style="border: 1px solid rgba(20, 20, 31, 0.12);">
+                    <p style="color: rgb(53, 51, 51); font-weight: 600;"><i class="fa-solid fa-key text-black-50 m-2"></i> Đổi mật khẩu</p>
+                    <div class="flex-grow-1">
+                        <hr style="height: 1px; color: rgb(0, 0, 0);">
+                        <div class="mb-3">
+                            
+                            <input type="hidden" class="form-control" id="TaiKhoanId" value="@Model.TaiKhoanId">
+                            <label for="" class="form-label">Tên tài khoản</label>
+                           
+                            <input type="text" class="form-control" id="TenTaiKhoan" value="@Model.TenTaiKhoan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Mật khẩu hiện tại</label>
+                           
+                            <input type="password" class="form-control" id="MatKhau" value="@Model.MatKhau">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="passwordnew">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Nhập lại mật khẩu mới</label>
+                            <input type="password" id="repassword" class="form-control">
+                        </div>
+                        <button type="button" onclick="ChangePass()" class="btn btn-primary text-nowrap ml-auto float-end">Đổi mật khẩu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- end col -->
+</div>
+@section scripts{
+
+    <script>
+        function ChangePass() {
+            var id = $("#TaiKhoanId").val();
+            var username = $("#TenTaiKhoan").val();
+            var passwword = $("#MatKhau").val();
+            var newpassword = $("#passwordnew").val();
+            var repassword = $("#repassword").val();
+            if (newpassword != repassword) {
+                alert("Mật khẩu mới phải giống nhau");
+                return;
+            }
+            if (passwword == newpassword) {
+                alert("Mật khẩu mới phải khác mật khẩu cũ");
+                return;
+            }
+            data = {
+                TaiKhoanId: id,
+                TenTaiKhoan: username,
+                MatKhau: newpassword
+            }
+            $.post("/TaiKhoans/EditProfile/"+id, data, function (res) {
+                if (res.Status) {
+                    toastr.success(res.Message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                } 
+            });
+        }
+
+        function ShowImage(imageUploader, previewImage) {
+            if (imageUploader.files && imageUploader.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(previewImage).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(imageUploader.files[0]);
+            }
+        }
+        $(function () {
+            $("#ImageUpload").change(function () {
+                if (window.FormData != undefined) {
+                    var fileUpload = $("#ImageUpload").get(0);
+                    var files = fileUpload.files;
+                    var formData = new FormData();
+                    formData.append("file", files[0]);
+                    formData.append("TaiKhoanID", @user.Id);
+                    $.ajax({
+                        type: "POST",
+                        url: "/TaiKhoans/UploadImage",
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (res) {
+                            toastr.success(res.Message);
+                            setTimeout (1000);
+                        }
+                    })
+                }
+            })
+        });
+    </script>
+}

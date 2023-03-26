@@ -1,0 +1,117 @@
+﻿@model QuanlyDiemrenluyen.ViewModels.TaiKhoanVM
+
+@{ 
+    var dsquyen = (List<QuanlyDiemrenluyen.Models.Quyen>)ViewBag.Quyen;
+}
+<form name="userForm" action="TaiKhoans/AddOrEdit" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <h4 id="TT" class="modal-title"></h4><br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TaiKhoanID)
+        <div class="row">
+            <div class="mb-3">
+                <label class="form-label">Tên tài khoản</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.TenTaiKhoan, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.TenTaiKhoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mã tài khoản</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.MaTaiKhoan, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.MaTaiKhoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Họ và tên</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ngày sinh</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control", @type = "date", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", required = "required", type="email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Số điện thoại</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Khoa</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("MaKhoa", (IEnumerable<SelectListItem>)ViewBag.khoas, "--- Lựa chọn---", new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(model => model.MaKhoa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Lớp</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("MaLop", (IEnumerable<SelectListItem>)ViewBag.lops, "--- Lựa chọn---", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MaLop, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Chức vụ</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("ChucVuID", (IEnumerable<SelectListItem>)ViewBag.cv, "--- Lựa chọn---", new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(model => model.ChucVuId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-0">
+                <div class="modal-footer">
+                    <button type="button" onclick="CreateOrUpdate()" class="btn btn-primary waves-effect waves-light me-1">Lưu</button>&nbsp;
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    if (@Model.TaiKhoanID> 0) {
+        $("#TT").html('Cập nhật');
+    } else {
+        $("#TT").html("Thêm mới");
+    }
+
+    $('body div#detail.modal').one('shown.bs.modal', function (e) {
+        $(this).find('div.modal-content select').selectpicker();
+    })
+
+    $(document).ready(function () {
+        $(".js-example-basic-multiple").select2({
+            dropdownParent: $("#userModal"),
+            width: 'resolve'
+        });
+    });
+
+    
+
+</script>
+

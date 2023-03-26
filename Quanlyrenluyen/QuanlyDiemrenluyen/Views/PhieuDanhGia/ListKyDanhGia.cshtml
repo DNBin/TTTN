@@ -1,0 +1,230 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.DanhSachSinhVienVM>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    ViewBag.Title = "Duyệt điểm rèn luyện";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var count = Model.FirstOrDefault();
+    var phieudanhgia = (QuanlyDiemrenluyen.Models.PhieuDanhGia)ViewBag.kydanhgia;
+
+
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Quản lý đánh giá</a></li>
+                            <li class="breadcrumb-item"><a href="#">@ViewBag.Title</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        @if (phieudanhgia != null)
+                        {
+                        <div class="card-body">
+                            <div class="ND" style="margin: 0px auto; width: 150px;">
+
+                                <h5>HK  @phieudanhgia.KyDangKy.HocKyXet _ @phieudanhgia.KyDangKy.NamXet</h5>
+                            </div>
+                            <div class="ODIEM" style="width: 150px;   border-radius: 50%; border: 2px solid rgb(153, 146, 146); margin: 0px auto; display: flex;   justify-content: center; justify-items: center;">
+                                <h1 style="margin: 50px 55px;">
+                                    @if (phieudanhgia.DiemTong != null)
+                                    {
+                                        @phieudanhgia.DiemTong
+                                    }
+                                                            </h1>
+                            </div>
+                            <div class="noidung mt-3" style="width: 220px; margin: 0px auto; display: flex; justify-content: space-between;">
+                                <div class="o1">
+                                    <p>Sinh viên</p>
+                                    <p>Tập thể lớp</p>
+                                    <p>Hội đồng khoa</p>
+                                    <p>Xếp loại</p>
+                                </div>
+                                <div class="o2">
+                                    @if (phieudanhgia.DiemTongSV != null)
+                                    {
+                                        <p>@phieudanhgia.DiemTongSV</p>
+                                    }
+                                    @if (phieudanhgia.DiemTongCBL != null)
+                                    {
+                                        <p>@phieudanhgia.DiemTongCBL</p>
+                                    }
+                                    @if (phieudanhgia.DiemTong != null)
+                                    {
+                                        <p>@phieudanhgia.DiemTong</p>
+                                        if (phieudanhgia.DiemTong > 90)
+                                        {
+                                            <p>Xuất sắc</p>
+                                        }
+                                        else if (phieudanhgia.DiemTong > 80 && phieudanhgia.DiemTong < 90)
+                                        {
+                                            <p>Tốt</p>
+                                        }
+                                        else if (phieudanhgia.DiemTong > 70 && phieudanhgia.DiemTong < 80)
+                                        {
+                                            <p>Khá</p>
+                                        }
+                                        else if (phieudanhgia.DiemTong > 60 && phieudanhgia.DiemTong < 70)
+                                        {
+                                            <p>Trung bình khá</p>
+                                        }
+                                        else if (phieudanhgia.DiemTong > 50 && phieudanhgia.DiemTong < 60)
+                                        {
+                                            <p>Trung bình</p>
+                                        }
+                                        else if (phieudanhgia.DiemTong > 30 && phieudanhgia.DiemTong < 50)
+                                        {
+                                            <p>Yếu</p>
+                                        }
+                                        else
+                                        {
+                                            <td>Kém</td>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+            }
+            else
+            {
+                    <div class="card-body">
+                        <div class="ND" style="margin: 0px auto; width: 150px;">
+
+                            <h5></h5>
+                        </div>
+                        <div class="ODIEM" style="width: 150px;   border-radius: 50%; border: 2px solid rgb(153, 146, 146); margin: 0px auto; display: flex;   justify-content: center; justify-items: center;">
+                            <h1 style="margin: 50px 55px;"> &nbsp; </h1>
+                        </div>
+                        <div class="noidung mt-3" style="width: 220px; margin: 0px auto; display: flex; justify-content: space-between;">
+                            <div class="o1">
+                                <p>Sinh viên</p>
+                                <p>Tập thể lớp</p>
+                                <p>Hội đồng khoa</p>
+                                <p>Xếp loại</p>
+                            </div>
+                            <div class="o2">
+
+                            </div>
+                        </div>
+                        <hr>
+
+                    </div>
+            }
+                  </div>
+                </div>
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="p-3">Thống kê đánh giá rèn luyện</h4>
+                            <div class="button-items" id="tooltip-container">
+                                <table  class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <!--  <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian xét</th>
+                                            <th>Ngày đánh giá</th>
+                                            <th>Điểm số</th>
+                                            <th>Xếp loại</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr>
+                                            <td>
+                                                HK @item.HocKyXet _ @item.NamXet
+                                            </td>
+                                            @if (item.NgayDanhGia != null)
+                                            {
+                                                <td>@Convert.ToDateTime((item.NgayDanhGia).ToString()).ToString("dd/MM/yyyy")</td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+
+                                            @if (item.DiemTong != null)
+                                            {
+                                                <td>@item.DiemTong</td>
+                                                if (item.DiemTong > 90)
+                                                {
+                                                    <td>Xuất sắc</td>
+                                                }
+                                                else if (item.DiemTong > 80 && item.DiemTong < 90)
+                                                {
+                                                    <td>Tốt</td>
+                                                }
+                                                else if (item.DiemTong > 70 && item.DiemTong < 80)
+                                                {
+                                                    <td>Khá</td>
+                                                }
+                                                else if (item.DiemTong > 60 && item.DiemTong < 70)
+                                                {
+                                                    <td>Trung bình khá</td>
+                                                }
+                                                else if (item.DiemTong > 50 && item.DiemTong < 60)
+                                                {
+                                                    <td>Trung bình</td>
+                                                }
+                                                else if (item.DiemTong > 30 && item.DiemTong < 50)
+                                                {
+                                                    <td>Yếu</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Kém</td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                                <td></td>
+                                            }
+
+                                            @if (item.TrangThai == (int)EnumThongBao.CanBoLopXet || item.TrangThai == (int)EnumThongBao.CanboKhoaXet)
+                                            {
+
+
+                                                <td><label class="btn-hoantat text-danger"><i class="fa-solid fa-check"></i>Chờ duyệt</label></td>
+                                            }
+                                            else
+                                            {
+                                                <td><label class="btn-hoantat text-success"><i class="fa-solid fa-check"></i>Hoàn thành</label></td>
+                                            }
+                                            <td>
+                                                @*@Html.ActionLink(" ", "LoadPhieuDanhGia", new { KyDKID = item.KyDKID }, new { @class = "fa-solid fa-eye", placement = "top", title = "Chi tiết phiếu rèn luyện" })*@
+                                                @*@Html.ActionLink(" ", "XuatExcelPhieu", new { KyDKID = item.KyDKID }, new { @class = "fa-regular fa-file-excel btn-sm btn-icon text-white", placement = "top", title = "Chi tiết phiếu rèn luyện", style = "background: #009900;" })*@
+                                                <a href="/PhieuDanhGia/LoadPhieuDanhGia?KyDKID=@item.KyDKID" class=" btn-sm btn-icon btn-info" style="background: #0179A8; border: none" data-bs-toggle="tooltip" data-bs-placement="top" title="Chi tiết phiếu rèn luyện"><i class="fa-solid fa-eye" style="color: white"></i></a>
+                                                <a href="/PhieuDanhGia/XuatExcelPhieu?KyDKID=@item.KyDKID" class=" btn-sm btn-icon btn-info" style="background: #009900; border: none" data-bs-toggle="tooltip" data-bs-placement="top" title="Xuất thống kê phiếu"><i class="fa-regular fa-file-excel" style="color: white"></i></a>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>

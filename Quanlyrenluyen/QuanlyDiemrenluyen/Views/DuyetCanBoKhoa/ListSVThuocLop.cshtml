@@ -1,0 +1,117 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.DanhSachSinhVienVM>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    ViewBag.Title = "Danh sách sinh viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = 0;
+}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @*<button type="button" class="btn btn-light">Duyệt</button>
+                            <h4 class="card-title">Sinh viên</h4>*@
+                            <table id="datatable" class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ tên</th>
+                                        <th>Mã sinh viên</th>
+                                        <th>Tình trạng</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        id++;
+                                        <tr>
+                                            <td>@id</td>
+                                            <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.MaTaiKhoan)</td>
+
+                                            <td>
+                                                @if (item.TrangThai == (int)EnumThongBao.KhoiTao)
+                                                {
+                                                <label class="btn-hoantat text-danger">
+                                                    <i class="fa-regular fa-face-smile"> </i>
+                                                    Chưa tạo phiếu
+                                                </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.DangXuLy)
+                                                {
+                                                    <label>
+                                                        <i class="fa-solid fa-check"> </i>
+                                                        Sinh viên đang xét điểm
+                                                    </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.CanBoLopXet)
+                                                {
+                                                    <label>
+                                                        <i class="fa-regular fa-face-smile"></i>
+                                                        Lớp đang duyệt
+                                                    </label>
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.CanboKhoaXet)
+                                                {
+
+                                                    <label>
+                                                        <i class="fa-regular fa-face-smile"></i>
+                                                        Chờ duyệt
+                                                    </label>
+
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.HoanThanh)
+                                                {
+                                                    <label class="text-success">
+                                                        <i class="fa-solid fa-check"> </i>
+                                                        Hoàn thành
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.TrangThai == (int)EnumThongBao.CanboKhoaXet)
+                                                {
+                                                    @Html.ActionLink(" ", "DuyetPhieuDiem", new { KyDKID = ViewBag.KydkID, TaiKhoanID = item.TaiKhoanId }, new { @class = "fa-solid fa-eye" })
+                                                }
+                                                else if (item.TrangThai == (int)EnumThongBao.HoanThanh)
+                                                {
+                                                    @Html.ActionLink(" ", "LoadPhieuDiem", new { KyDKID = ViewBag.KydkID, TaiKhoanID = item.TaiKhoanId }, new { @class = "fa-solid fa-eye" })
+                                                }
+                                                else { }
+
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+
+

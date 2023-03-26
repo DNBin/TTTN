@@ -1,0 +1,169 @@
+﻿@model List<QuanlyDiemrenluyen.Models.Lop>
+@{
+    ViewBag.Title = "Lớp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = 0;
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">@ViewBag.Title</a></li>
+                            <li class="breadcrumb-item"><a href="#">Sinh viên</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                 <button type="button" class="btn btn-success waves-effect waves-warning mb-2" onclick="showPopup()"  title="Thêm Lớp Mới">Thêm</button>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="datatable" class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr style="color: #363642;">
+                                        <th>
+                                            STT
+                                        </th>
+
+                                        <th>
+                                            Tên lớp
+                                        </th>
+                                        <th>
+                                            Tên khoa
+                                        </th>
+
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        id++;
+                                        <tr style="color:#363642">
+
+                                            <td>
+                                                @id
+                                            </td>
+
+                                            <td>
+                                                @Html.HiddenFor(modelItem => item.MaLop)
+                                                <a onclick="showInfo('@item.MaLop')">@Html.DisplayFor(modelItem => item.TenLop)</a>
+                                            </td>
+                                            <td>
+                                                @(item.MaKhoaNavigation==null?"":item.MaKhoaNavigation.TenKhoa)
+                                            </td>
+                                            <td>
+                                                @{ 
+                                                    <a class="btn btn-sm btn-icon btn-info" style ="background: #0179A8; border:none" data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa Lớp" style="border-radius:50%;" onclick="showPopup('@item.MaLop')"><i class="fa fa-pencil-alt" style="color: white"></i></a>
+                                                    <a class="btn btn-sm btn-icon btn-danger"style ="background: #a95292; border:none" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa Lớp" style="border-radius:50%;" onclick="showDelete('@item.MaLop')"><i class="far fa-trash-alt" style="color: white"></i></a>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="col-sm-6 col-md-4 col-xl-3">
+                                <div class="modal fade bs-example-modal-lg" data-bs-backdrop="static" data-keyboard="false" role="dialog" id="userModal" aria-labelledby="userModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content" id="usermodalBody"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+    </div>
+    <!-- end main content-->
+</div>
+
+@section scripts{
+
+    <script>
+
+        function showPopup(id) {
+            $.get("/Lop/GetLopPartial", { id: id }, function (res) {
+                $("#usermodalBody").html(res);
+                $("#userModal").modal('show');
+            })
+        }
+
+        function CreateOrUpdate() {
+            var modal = $("#userModal");
+            var form = $('form[name="userForm"]');
+            form.validate();
+            if (!form.valid()) {
+                return;
+            } else {
+                var data = form.serialize();
+                $.post("/Lop/AddOrEdit", data, function (res) {
+                    if (res.Status) {
+                        toastr.success(res.Message);
+                        setTimeout(function () {
+                            modal.modal('hide');
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(res.Message);
+                    }
+                });
+            }
+        }
+        function showInfo(id) {
+            $.get("/Lop/GetInfo", { id: id }, function (res) {
+                $("#usermodalBody").html(res);
+                $("#userModal").modal('show');
+            })
+        }
+
+        function showDelete(id) {
+            $.get("/Lop/GetDelete", { id: id }, function (res) {
+                $("#usermodalBody").html(res);
+                $("#userModal").modal('show');
+            })
+        }
+
+        function Delete() {
+            var modal = $("#userModal");
+            var form = $('form[name="userForm"]');
+            form.validate();
+            if (!form.valid()) {
+                return;
+            } else {
+                var data = form.serialize();
+                $.post("/Lop/Delete", data, function (res) {
+                    if (res.Status) {
+                        toastr.success(res.Message);
+                        setTimeout(function () {
+                            modal.modal('hide');
+                            location.reload();
+                        }, 1000);
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+

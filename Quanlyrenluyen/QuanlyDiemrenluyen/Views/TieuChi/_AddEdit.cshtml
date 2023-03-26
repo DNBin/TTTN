@@ -1,0 +1,59 @@
+﻿@model QuanlyDiemrenluyen.Models.TieuChi
+<form name="userForm" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <h4 id="TT" class="modal-title"></h4><br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TieuChiId)
+        <div class="row">
+            <div class="mb-3">
+                <label class="form-label">Tên tiêu chí</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.TenTieuChi, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.TenTieuChi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Điểm tiêu chí</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.DiemTieuChi, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.DiemTieuChi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Thứ tự</label>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.OrderKey, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.OrderKey, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="mb-3">
+                <label class="form-label">Danh mục cha</label>
+                <div class="col-md-12">
+                    @Html.DropDownList("ParentID", (IEnumerable<SelectListItem>)ViewBag.menus, "- - - Lựa chọn - - - ", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MenuId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="mb-0">
+                <div class="modal-footer">
+                    <button type="button" onclick="CreateOrUpdate()" class="btn btn-primary waves-effect waves-light me-1">Lưu</button>&nbsp;
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    if (@Model.TieuChiId> 0) {
+        $("#TT").html('Cập nhật');
+    } else {
+        $("#TT").html("Thêm mới");
+    }
+
+</script>
+

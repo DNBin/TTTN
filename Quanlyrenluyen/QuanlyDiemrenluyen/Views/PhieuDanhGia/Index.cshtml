@@ -1,0 +1,496 @@
+﻿@model List<QuanlyDiemrenluyen.ViewModels.PhieuDanhGiaVM>
+@using QuanlyDiemrenluyen.Helpers;
+
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "Phiếu đánh giá";
+    Layout = null;
+    var id = 0;
+    var colspan = "";
+    var khoa = 0;
+    var lop = 0;
+    var sv = 0;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <title>Đánh giá điểm rèn luyện DTHU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+    <meta content="Themesbrand" name="author">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Assets/images/favicon.ico">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- DataTables -->
+    <link href="~/Assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Assets/css/Style.css" rel="stylesheet" />
+    <!-- Responsive datatable examples -->
+    <link href="~/Assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Css -->
+    <link href="~/Assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css">
+    <!-- Icons Css -->
+    <link href="~/Assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <!-- App Css-->
+    <link href="~/Assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css">
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <link href="~/Assets/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Assets/css/toastr.css" rel="stylesheet" />
+
+</head>
+<body data-sidebar="dark">
+
+
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- START LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="#" class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/Assets/images/logo-dthu.png" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/Assets/images/logo-dthu.png" alt="" height="17">
+                            </span>
+                        </a>
+
+                        <a href="#" class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/Assets/images/logo-dthu.png" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/Assets/images/banner.png" alt="" height="55" width="188">
+                            </span>
+                        </a>
+                    </div>
+                    <!-- END LOGO -->
+                    <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+
+                    <div class="d-none d-sm-block">
+                        <div class="dropdown pt-3 d-inline-block">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                HỆ THỐNG QUẢN LÝ ĐIỂM RÈN LUYỆN
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <!-- App Search-->
+                    <div class="dropdown d-inline-block d-lg-none ms-2">
+                        <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="mdi mdi-magnify"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-search-dropdown">
+
+                            <form class="p-3">
+                                <div class="form-group m-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="dropdown d-none d-lg-inline-block">
+                        <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
+                            <i class="mdi mdi-fullscreen"></i>
+                        </button>
+                    </div>
+
+
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user" src="@user.HinhAnh"
+                                 alt="Header Avatar">
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a class="btn disabled dropdown-item" href="/TaiKhoans/ProfileUser"><i class="mdi mdi-account-circle font-size-17 align-middle me-1"></i>Thông tin cá nhân </a>
+                           
+                            <a class="dropdown-item text-danger" href="/DangNhap/SignOut"><i class="bx bx-power-off font-size-17 align-middle me-1 text-danger"></i> Đăng xuất</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+        <!-- ========== Left Sidebar Start Menu ========== -->
+        @foreach (var item in user.DsQuyen)
+        {
+            if (item.MaQuyen == 3)
+            {
+                khoa++;
+            }
+            if (item.MaQuyen == 2 || item.MaQuyen == 1)
+            {
+                lop++;
+            }
+            if (item.MaQuyen == 1)
+            {
+                sv++;
+            }
+        }
+        @if (khoa == 1)
+        {
+            <div class="vertical-menu">
+                <div data-simplebar class="h-100">
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Trang chủ</li>
+                            <li>
+                                <a href="/Dashboard" class=" waves-effect">
+                                    <i class="fa fa-house-user"></i>
+                                    <span>Bộ điều khiển</span>
+                                </a>
+
+                               
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ti-receipt"></i>
+                                    <span>Quản lý đánh giá</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+
+                                    <li><a href="/TaoDanhGia">Tạo kỳ đánh giá</a></li>
+                                    <li><a href="/KyDanhGia">Thông tin kỳ đánh giá</a></li>
+                                    <li><a href="/DuyetCanBoKhoa">Duyệt điểm rèn luyện</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="menu-icon fab fa-windows"></i>
+                                    <span>Quản trị hệ thống</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li>@Html.ActionLink("Khoa", "Index", "Khoa")</li>
+                                    <li>@Html.ActionLink("Lớp", "Index", "Lop")</li>
+                                    <li>@Html.ActionLink("Chức vụ", "Index", "ChucVu")</li>
+                                    <li><a href="/TaiKhoans">Tài khoản</a></li>
+                                    <li><a href="/Menu">Danh mục(Menu)</a></li>
+                                    <li><a href="/Quyen">Quyền</a></li>
+                                    <li>@Html.ActionLink("Tiêu chí", "Index", "TieuChi")</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- End Menu -->
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+        }
+        else if (lop == 2)
+        {
+            <div class="vertical-menu">
+                <div data-simplebar class="h-100">
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Trang chủ</li>
+                            <li>
+                                <a href="/Dashboard/DashboardLop" class="btn disabled waves-effect">
+                                    <i class="fa fa-house-user"></i>
+                                    <span>Bộ điều khiển</span>
+                                </a>
+                               
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="btn disabled has-arrow waves-effect">
+                                    <i class="ti-receipt"></i>
+                                    <span>Quản lý đánh giá</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="/PhieuDanhGia/ListKyDanhGia">Sinh viên xem điểm</a></li>
+                                    <li><a href="/DuyetCanBoLop">Lớp duyệt điểm rèn luyện</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- End Menu -->
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+        }
+        else if (sv == 1)
+        {
+            <div class="vertical-menu">
+                <div data-simplebar class="h-100">
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Trang chủ</li>
+                            <li>
+                                <a href="/Taikhoans/ProfileUser" class="btn disabled waves-effect">
+                                    <i class="fa fa-house-user"></i>
+                                    <span>Thông tin cá nhân</span>
+                                </a>
+                               
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class=" btn disabled has-arrow waves-effect">
+                                    <i class="ti-receipt"></i>
+                                    <span>Quản lý đánh giá</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="/PhieuDanhGia/ListKyDanhGia">Sinh viên xem điểm</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                        <!-- End Menu -->
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+        }
+
+
+        <div class="">
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="page-title-box">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h6 class="page-title">Trang chủ</h6>
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="#">Quản lý đánh giá rèn luyện</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Sinh viên</a></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form name="userForm" @*action="/PhieuDanhGia/Index"*@ method="post" enctype="multipart/form-data">
+                                            <div class="table-responsive">
+                                                <table class="table table-editable table-nowrap align-middle font-size-13 ">
+                                                    <thead>
+                                                        <h4 style="margin: 0px auto; width: 400px;">PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN</h4>
+                                                        <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px; padding-top: 15px; font-weight: 500;">
+                                                            <p>Họ và tên: <span>@user.HoTen</span></p>
+                                                            <p>Ngày tháng năm sinh: <span>@Convert.ToDateTime((user.NgaySinh).ToString()).ToString("dd/MM/yyyy") </span></p>
+                                                            <p>MSSV: <span>@user.MaSV</span></p>
+                                                        </div>
+                                                        <div class="noidung" style="width: 700px; display: flex; justify-content: space-between; margin: 0px auto; color: #5B626B; font-size: 16px;font-weight: 500;">
+                                                            <p>Lớp: <span>@user.TenLop</span> </p>
+                                                            <p>Khoa: <span> @user.TenKhoa</span> </p>
+                                                            <p>Học kì: <span>@ViewBag.hocky</span></p>
+                                                            <p>Năm học: <span>@ViewBag.namxet</span> </p>
+                                                        </div>
+                                                        <tr>
+                                                            <th>TT</th>
+                                                            <th>Nội dung đánh giá</th>
+                                                            <th>Điểm tối đa</th>
+                                                            <th>Sinh viên tự đánh giá</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            id++;
+                                                            <tr>
+                                                                @Html.HiddenFor(modelItem => item.TieuChiId)
+                                                                <th @if (item.DiemTieuChi != null) { colspan = "colspan= 2"; @colspan  } else { colspan = "colspan= 6"; @colspan }>
+                                                                    @item.TenTieuChi
+                                                                    @if (item.TieuChiId == 35)
+                                                                    {
+                                                                        <table class="table table-striped table-bordered  ">
+                                                                            <tr>
+                                                                                <th rowspan="2">Chức vụ</th>
+                                                                                <th colspan="4">Xếp loại</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Xuất sắc</td>
+                                                                                <td>Tốt</td>
+                                                                                <td>Khá</td>
+                                                                                <td>Trung bình khá</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Cấp trưởng</th>
+                                                                                <td>10</td>
+                                                                                <td>9</td>
+                                                                                <td>8</td>
+                                                                                <td>6</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Cấp phó</th>
+                                                                                <td>8</td>
+                                                                                <td>7</td>
+                                                                                <td>6</td>
+                                                                                <td>4</td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    }
+                                                                </th>
+
+
+                                                                @if (item.DiemTieuChi != null)
+                                                                {
+                                                                    <th>@item.DiemTieuChi</th>
+                                                                    <th><input id="DiemSV" type="number" name="NhapDiemSV" min="0" max="@item.DiemTieuChi" onkeypress="return isNumberKey(event)" onchange="tong()" onKeyUp=" if (this.value > @item.DiemTieuChi) { this.value='@item.DiemTieuChi' }" data-phieuid="@item.PhieuId" data-diemid="@item.DiemId" data-tieuchiid="@item.TieuChiId" class="form-control NhapDiemSV" placeholder="0"></th>
+                                                                }
+                                                            </tr>
+                                                        }
+                                                        <tr>
+                                                            <th colspan="2">Tổng điểm</th>
+                                                            <td colspan="1"> 100</td>
+                                                            <th><span id="tong"></span></th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <button type="button" onclick="Send()" class="btn btn-primary waves-effect waves-light float-end pf-2"><i class="fa-solid fa-share"></i> Gửi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+            @*<footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> Đánh giá điểm rèn luyện <span class="d-none d-sm-inline-block"> - DTHU with <i class="mdi mdi-heart text-danger"></i> by Bé Bin yêu dấu - Bé Nghĩa tìm chết mọe luôn.</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>*@
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/Assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/Assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/Assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/Assets/libs/node-waves/waves.min.js"></script>
+
+    <!-- Required datatable js -->
+    <script src="~/Assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/Assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/Assets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/Assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/Assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/Assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="~/Assets/js/pages/datatables.init.js"></script>
+
+    @*<script src="~/Assets/js/pages/table-editable.init.js"></script>*@
+
+    <script src="~/Assets/js/app.js"></script>
+    <!--tinymce js-->
+    <script src="~/Assets/libs/tinymce/tinymce.min.js"></script>
+    <!-- EDITOR -->
+    <script src="~/Assets/js/pages/email-editor.init.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="~/Assets/css/toastr.min.js"></script>
+    <script src="~/Assets/js/select2.min.js"></script>
+    <script>
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+        }
+        function tong() {
+            let sum = 0;
+            $('.NhapDiemSV').each(function (i, value) {
+                diem = $(value).val()
+                sum += Number(diem)
+            });
+            console.log(sum);
+            var hocky = document.getElementById("tong");
+            hocky.innerHTML = sum;
+        }
+
+    function Send() {
+
+        var NhapDiemSV = [];
+        $('.NhapDiemSV').each(function (i, value) {
+            Nhapdiem = {
+                PhieuID: $(value).data("phieuid"),
+                TieuChiID : $(value).data("tieuchiid"),
+                DiemID: $(value).data("diemid"),
+                DiemSV:$(value).val()
+            }
+            NhapDiemSV.push(Nhapdiem);
+
+        });
+        /*console.log(NhapDiemSV);*/
+        $.ajax({
+            url: "/PhieuDanhGia/AddDiem",
+            data: JSON.stringify(NhapDiemSV),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (res) {
+                if (res.Status) {
+                    toastr.success(res.Message);
+                    setTimeout(function () {
+                        window.location = "@Url.Action("ListKyDanhGia","PhieuDanhGia")";
+                    }, 1000);
+                }
+
+            },
+            error: function () {
+                toastr.error("Đã xảy ra lỗi.");
+            }
+        });
+        }
+    </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,253 @@
+﻿@using QuanlyDiemrenluyen.Helpers;
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var tongxs = 0;
+    var tongtot = 0;
+    var tongkha = 0;
+    var tongtbk = 0;
+    var tongtb = 0;
+    var tongyeu = 0;
+    var tongkem = 0;
+
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h6 class="page-title">@ViewBag.Title</h6>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item active">Xin chào @user.HoTen đã đến với hệ thống</li>
+                        </ol>
+                        @*<a href="main_index_canbokhoa_taodanhgia.html">Tạo đánh giá</a>*@
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary text-white">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="float-start mini-stat-img me-4">
+                                    <a href="/Lop">
+                                        <img src="~/Assets/images/services-icon/01.png" alt="">
+                                    </a>
+                                </div>
+                                <h5 class="font-size-16 text-uppercase text-white-50">Tổng số lớp</h5>
+                                <h4 class="fw-medium font-size-24">@ViewBag.tonglop</h4>
+                            </div>
+                            <div class="pt-2">
+                                <div class="float-end">
+                                    <a href="/Lop" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success text-white">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="float-start mini-stat-img me-4">
+                                    <a href="/TaiKhoans"> <img src="~/Assets/images/services-icon/02.png" alt=""></a>
+
+                                </div>
+                                <h5 class="font-size-16 text-uppercase text-white-50">Tổng sinh viên </h5>
+                                <h4 class="fw-medium font-size-24">@ViewBag.tongsv<h4>
+                            </div>
+                            <div class="pt-2">
+                                <div class="float-end">
+                                    <a href="/TaiKhoans" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
+                                </div>
+                                <a href="/TaiKhoans">
+                                    <p class="text-white-50 mb-0 mt-1"></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-warning text-white">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="float-start mini-stat-img me-4">
+                                    <a href="/DuyetCanBoKhoa">
+                                        <img src="~/Assets/images/services-icon/03.png" alt="">
+                                    </a>
+                                </div>
+                                <h5 class="font-size-16 text-uppercase text-white-50">Duyệt phiếu</h5>
+                                <h4 class="fw-medium font-size-24">
+                                    @if (ViewBag.phieuduyet != null)
+                                    {@ViewBag.phieuduyet}
+                                </h4>
+                            </div>
+                            <div class="pt-2">
+                                <div class="float-end">
+                                    <a href="/DuyetCanBoKhoa" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
+                                </div>
+
+                                <p class="text-white-50 mb-0 mt-1"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-blue-grey text-white">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="float-start mini-stat-img me-4">
+                                    <a href="/DuyetCanBoKhoa">
+                                        <img src="~/Assets/images/services-icon/04.png" alt="">
+                                    </a>
+                                </div>
+                                <h5 class="font-size-16 text-uppercase text-white-50">Chưa duyệt</h5>
+                                <h4 class="fw-medium font-size-24">
+                                    @if (ViewBag.phieuchuaduyet != null)
+                                    {@ViewBag.phieuchuaduyet}
+                                </h4>
+                            </div>
+                            <div class="pt-2">
+                                <div class="float-end">
+                                    <a href="/DuyetCanBoKhoa" class="text-white-50"><i class="mdi mdi-arrow-right h5"></i></a>
+                                </div>
+
+                                <p class="text-white-50 mb-0 mt-1"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Phiếu đánh giá</h4>
+                                <div class="row justify-content-center">
+                                    @*<div class="col-sm-4">
+                                        <div class="text-center">
+                                            <h5 class="mb-0 font-size-20">2536</h5>
+                                            <p class="text-muted">Activated</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="text-center">
+                                            <h5 class="mb-0 font-size-20">69421</h5>
+                                            <p class="text-muted">Pending</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="text-center">
+                                            <h5 class="mb-0 font-size-20">89854</h5>
+                                            <p class="text-muted">Deactivated</p>
+                                        </div>
+                                    </div>*@
+                                </div>
+                                <canvas id="pie" height="260">
+                                    <input type="hidden" data-value="@ViewBag.phieuduyet" id="dat" />
+                                    <input type="hidden" data-value="@ViewBag.phieuchuaduyet" id="chuadat" />
+
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                    <!-- end row -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Xếp loại sinh viên</h4>
+                                <div class="row justify-content-center">
+                                   
+                                </div>
+                                <canvas id="polarArea" height="300">
+                                    @if (ViewBag.xeploai != null)
+                                    {
+                                        foreach (var item in ViewBag.xeploai)
+                                        {
+                                            var xs = 0;
+                                            var tot = 0;
+                                            var kha = 0;
+                                            var tbk = 0;
+                                            var tb = 0;
+                                            var yeu = 0;
+                                            var kem = 0;
+
+                                            foreach (var tong in item.DiemTong)
+                                            {
+                                                if (tong.DiemTong > 90)
+                                                {
+                                                    xs += 1;
+
+                                                }
+                                                else if (tong.DiemTong > 80 && tong.DiemTong < 90)
+                                                {
+                                                    tot += 1;
+
+                                                }
+                                                else if (tong.DiemTong > 70 && tong.DiemTong < 80)
+                                                {
+                                                    kha += 1;
+
+                                                }
+                                                else if (tong.DiemTong > 60 && tong.DiemTong < 70)
+                                                {
+                                                    tbk += 1;
+
+                                                }
+                                                else if (tong.DiemTong > 50 && tong.DiemTong < 60)
+                                                {
+                                                    tb += 1;
+
+                                                }
+                                                else if (tong.DiemTong > 30 && tong.DiemTong < 50)
+                                                {
+                                                    yeu += 1;
+
+                                                }
+                                                else
+                                                {
+                                                    kem += 1;
+
+                                                }
+                                            }
+                                            tongxs += xs;
+                                            tongtot = tot;
+                                            tongkha += kha;
+                                            tongtbk += tbk;
+                                            tongtb += tb;
+                                            tongyeu += yeu;
+                                            tongkem += kem;
+
+                                        }
+                                    }
+                                    <input type="hidden" id="xs" data-value="@tongxs" />
+                                    <input type="hidden" id="tot" data-value="@tongtot" value="" />
+                                    <input type="hidden" id="kha" data-value="@tongkha" value="" />
+                                    <input type="hidden" id="tbk" data-value="@tongtbk" value="" />
+                                    <input type="hidden" id="tb" data-value="@tongtb" value="" />
+                                    <input type="hidden" id="yeu" data-value="@tongyeu" value="" />
+                                    <input type="hidden" id="kem" data-value="@tongkem" value="" />
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- end row -->
+
+                </div>
+            </div>
+        </div>
+        <!-- end main content-->
+
+    </div>
+</div>

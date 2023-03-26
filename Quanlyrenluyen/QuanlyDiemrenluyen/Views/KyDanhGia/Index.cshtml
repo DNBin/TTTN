@@ -1,0 +1,186 @@
+﻿@model List<QuanlyDiemrenluyen.Models.KyDangKy>
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    ViewBag.Title = "Kỳ đánh giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = 0;
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Quản lý đánh giá</a></li>
+                            <li class="breadcrumb-item"><a href="#">@ViewBag.Title</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <a href="/TaoDanhGia" class="btn btn-success waves-effect waves-warning mb-2" title="Tạo mới kỳ đánh giá">Thêm</a>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <table id="datatable" class="table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            STT
+                                        </th>
+
+                                        <th>
+                                            Tiêu đề
+                                        </th>
+                                        <th>
+                                            Năm xét
+                                        </th>
+                                        <th>
+                                            Học kỳ
+                                        </th>
+                                        <th>
+                                            Ngày kết thúc
+                                        </th>
+                                        <th>
+                                            Trạng thái
+                                        </th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        id++;
+                                    <tr>
+
+                                        <td>
+                                            @id
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TieuDeDk)
+                                            @Html.HiddenFor(modelItem => item.KyDkid)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NamXet)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.HocKyXet)
+                                        </td>
+                                        <td>
+                                            @Convert.ToDateTime((item.NgayKt).ToString()).ToString("dd/MM/yyyy")
+                                        </td>
+                                        @if (item.TrangThai == (int)EnumKyDangKy.DaMo)
+                                        {
+                                            <td>
+                                                Đang mở
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                Đã kết thúc
+                                            </td>
+                                        }
+                                        <td>
+                                            @{
+                                                <a class="btn btn-sm btn-icon btn-danger" style="background: #3d83bf; border: none" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Kết thúc kỳ đánh giá" style="border-radius:50%;" onclick="showUpdate('@item.KyDkid')"><i class="fa-solid fa-hourglass-end" style="color: white"></i></a>
+                                                <a class="btn btn-sm btn-icon btn-danger" style="background: #a95292; border:none" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa kỳ đánh giá" style="border-radius:50%;" onclick="showDelete('@item.KyDkid')"><i class="far fa-trash-alt" style="color: white"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="col-sm-6 col-md-4 col-xl-3">
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1"  data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" id="userModal" aria-labelledby="userModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                        <div class="modal-content" id="usermodalBody"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+    </div>
+    <!-- end main content-->
+</div>
+
+@section scripts{
+
+    <script>
+
+        function showUpdate(id) {
+            $.get("/KyDanhGia/GetUpdate", { id: id }, function (res) {
+                $("#usermodalBody").html(res);
+                $("#userModal").modal('show');
+            })
+        }
+
+        function Update() {
+            var modal = $("#userModal");
+            var form = $('form[name="userForm"]');
+            form.validate();
+            if (!form.valid()) {
+                return;
+            } else {
+                var data = form.serialize();
+                $.post("/KyDanhGia/Update", data, function (res) {
+                    if (res.Status) {
+                        toastr.success(res.Message);
+                        setTimeout(function () {
+                            modal.modal('hide');
+                            location.reload();
+                        }, 1000);
+                    }
+                });
+            }
+        }
+
+        function showDelete(id) {
+            $.get("/KyDanhGia/GetDelete", { id: id }, function (res) {
+                $("#usermodalBody").html(res);
+                $("#userModal").modal('show');
+            })
+        }
+
+        function Delete() {
+            var modal = $("#userModal");
+            var form = $('form[name="userForm"]');
+            form.validate();
+            if (!form.valid()) {
+                return;
+            } else {
+                var data = form.serialize();
+                $.post("/KyDanhGia/Delete", data, function (res) {
+                    if (res.Status) {
+                        toastr.success(res.Message);
+                        setTimeout(function () {
+                            modal.modal('hide');
+                            location.reload();
+                        }, 1000);
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+

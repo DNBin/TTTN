@@ -1,0 +1,58 @@
+﻿@model QuanlyDiemrenluyen.Models.ThongBao
+@using QuanlyDiemrenluyen.Helpers;
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    Layout = null;
+}
+
+<!--  Modal content for the above example -->
+<div id="myModal" class="modal fade bs-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="modal-title"><i class="fa fa-exclamation-triangle text-danger mr-1"></i> Đăng ký xét điểm rèn luyện</h4><br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <form name="userForm" action="" method="post">
+                                @Html.Hidden("MaKhoa", user.MaKhoa.ToString())
+                                @Html.Hidden("TaiKhoanID", user.Id.ToString())
+                                @Html.HiddenFor(model => model.KyDkid)
+                                @Html.HiddenFor(model => model.TieuDe)
+                                <span>@Html.DisplayFor(model => model.TieuDe)</span>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="AddPhieu()" class="btn btn-primary waves-effect waves-light me-1">Đăng ký</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script src="~/Assets/libs/jquery/jquery.min.js"></script>
+
+    <script>
+        function AddPhieu() {
+        var modal = $("#myModal");
+        var form = $('form[name="userForm"]');
+        form.validate();
+        if (!form.valid()) {
+            return;
+        } else {
+            var data = form.serialize();
+            $.post("/PhieuDanhGia/AddPhieu", data, function (res) {
+                if (res) {
+                    window.location = "@Url.Action("Index","PhieuDanhGia",new { KyDKID = Model.KyDkid})";
+                }
+            });
+        }
+    }
+    </script>

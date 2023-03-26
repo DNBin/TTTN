@@ -1,0 +1,150 @@
+﻿
+@model QuanlyDiemrenluyen.ViewModels.KyDangKyVM
+@using QuanlyDiemrenluyen.Helpers;
+
+@{
+    var user = (User)Session[Constants.USER_SESSION];
+}
+@{
+    ViewBag.Title = "Tạo đánh giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="page-title-box">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title">@ViewBag.Title</h4>
+                        @*<ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Quản lý đánh giá</a></li>
+                            <li class="breadcrumb-item"><a href="/TaoDanhGia">@ViewBag.Title</a></li>
+                        </ol>*@
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <form name="userForm" action="/TaoDanhGia/Index" method="POST" enctype="multipart/form-data">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <div class="mb-3">
+                                            <h4 id="TieuDeDK" name="TieuDeDK" onclick="td()">PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN HỌC KỲ <span id="hk"></span> NĂM HỌC <span id="nam"></span></h4>
+                                            @Html.HiddenFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="validationTooltip04" class="form-label">Khoa</label>
+                                            <input type="hidden" name="MaKhoa" value="@user.MaKhoa" />
+                                            <p>@user.TenKhoa</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="validationTooltip04" class="form-label">Lớp</label><br />
+                                            @Html.DropDownList("MaLopList", (IEnumerable<SelectListItem>)ViewBag.lops, new { @class = "js-example-basic-multiple", style = "width:100%", multiple = "multiple" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="validationTooltip04" class="form-label">Năm học</label>
+                                            <select name="NamXet" class="form-select" id="NamXet" onclick="namxet()" required>
+                                                <option value="">----Lựa chọn----</option>
+                                                <option>2020 - 2021</option>
+                                                <option selected>2021 - 2022</option>
+                                                <option>2022 - 2023</option>
+                                                <option>2023 - 2024</option>
+                                                <option>2024 - 2025</option>
+                                                <option>2025 - 2026</option>
+                                                <option>2026 - 2027</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="mb-3">
+                                            <label for="validationTooltip04" class="form-label">Học kỳ</label>
+                                            <select name="HocKyXet" class="form-select" id="HocKyXet" onclick="hocky()" required>
+                                                <option value="">----Lựa chọn----</option>
+                                                <option value="I">Học kỳ I</option>
+                                                <option value="II">Học kỳ II</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Thời gian bắt đầu đánh giá </label>
+                                            <input class="form-control text-box single-line" data-val="true" data-val-date="The field NgayBD must be a date." id="NgayBD" name="NgayBD" type="date" value="@Convert.ToDateTime((DateTime.Now).ToString()).ToString("yyyy-MM-dd")">
+                                            
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Thời gian kết thúc đánh giá </label>
+                                            @Html.EditorFor(model => model.NgayKT, new { htmlAttributes = new { @class = "form-control" , type = "date" } })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Nội dung</label><br />
+                                        @Html.TextAreaFor(model => model.NoiDung, new { @id = "email-editor" })
+                                    </div>
+
+                                    <div class="">
+                                        <!--   <button type="button" class="btn btn-success waves-effect waves-light me-1"><i class="far fa-save"></i></button> -->
+                                        <button type="button" class="btn btn-success waves-effect waves-light me-1"><i class="far fa-trash-alt"></i></button>
+                                        <button onclick="CreateOrUpdate()" type="submit" class="btn btn-purple waves-effect waves-light" > <span>Tạo</span> <i class="fab fa-telegram-plane ms-2"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+@section scripts{
+
+    <script>
+        function hocky() {
+            var i = document.getElementById("HocKyXet");
+            var hk = i.value;
+            var hocky = document.getElementById("hk");
+            hocky.innerHTML = hk;
+        }
+        function namxet() {
+            var i = document.getElementById("NamXet");
+            var hk = i.value;
+            var hocky = document.getElementById("nam");
+            hocky.innerHTML = hk;
+        }
+        function CreateOrUpdate() {
+            var i = document.getElementById("HocKyXet");
+            var hk = i.value;
+            var o = document.getElementById("NamXet");
+            var nam = o.value;
+            var domain = "PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN HỌC KỲ " + hk + " NĂM HỌC " + nam;
+            document.getElementById('TieuDe').value = domain;
+        }
+        $(document).ready(function () {
+            $(".js-example-basic-multiple").select2({
+            });
+        });
+    </script>
+}
+
